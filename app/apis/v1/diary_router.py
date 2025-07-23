@@ -1,5 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
-from starlette.status import HTTP_201_CREATED, HTTP_404_NOT_FOUND
+from starlette.status import (
+    HTTP_201_CREATED,
+    HTTP_204_NO_CONTENT,
+    HTTP_404_NOT_FOUND,
+)
 
 from app.dependencies import get_current_user
 from app.dtos.diary_dto import (
@@ -62,6 +66,7 @@ async def summarize_diary(
     summarized_text = await gemini_service.summarize_diary_content(diary.content)
 
     diary.emotion_summary = {"summary_text": summarized_text}
+    # await diary.save()
 
     return {"summary": summarized_text}
 
@@ -179,6 +184,8 @@ async def list_diaries(
     return [DiaryResponse.model_validate(diary) for diary in diaries]
 
 
+
+
 @router.patch("/{diary_id}", response_model=DiaryResponse)  # Update Diary
 async def update_diary(
     diary_id: int,
@@ -202,3 +209,24 @@ async def update_diary(
 
     # 4. 수정된 diary를 response 모델로 반환
     return DiaryResponse.model_validate(diary)
+
+
+@router.delete("/{diary_id}", status_code=HTTP_204_NO_CONTENT)
+async def delete_diary(
+    diary_id: int,
+    current_user: UserModel = Depends(get_current_user),
+):
+    """
+    지정된 ID의 일기를 삭제합니다.
+
+    :param diary_id: 삭제할 일기의 ID
+    :param current_user: 현재 로그인된 사용자 정보
+    """
+    diary = await DiaryModel.get_or_none(id=diary_id, user=current_user.id)
+    if not diary:
+        raise HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="Diary not found or you don't have permission to delete it",
+        )
+
+    await diary.delete()
