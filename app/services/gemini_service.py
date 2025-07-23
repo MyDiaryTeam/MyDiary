@@ -18,7 +18,7 @@ async def summarize_diary_content(content: str) -> str:
     :return: 요약된 내용
     """
     model = genai.GenerativeModel("gemini-2.0-flash-thinking-exp-1219")
-    prompt = f"""다음 일기 내용을 2~3줄로 요약해주세요:
+    prompt = f"""다음 일기 내용을 2~3줄로 요약해, 영어는 한글로 번역해서 작성해:
 
 {content}
 
