@@ -49,7 +49,7 @@ async def analyze_diary_emotion(diary_id: int, user_id: int, content: str) -> di
 
 특히, 부정적 감정 키워드(예: 슬픔, 분노, 짜증, 우울 등)를 명확히
 구분하여 별도로 표시해 주세요.
-
+영어는 한글로 번역해서 작성해
 출력은 JSON 형태로 아래 예시처럼 작성해 주세요.
 
 {{
