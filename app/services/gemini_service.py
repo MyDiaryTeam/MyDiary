@@ -29,7 +29,7 @@ async def summarize_diary_content(content: str) -> str:
     except ResourceExhausted as e:
         raise HTTPException(
             status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-            detail=f"현재 API 요청이 많아 처리에 실패했습니다. 잠시 후 다시 시도해주세요. {e}",
+            detail=f"요청이 너무 많습니다 조교님 잠시 후 다시 시도해주세요. {e}",
         )
 
 
@@ -80,7 +80,7 @@ async def analyze_diary_emotion(diary_id: int, user_id: int, content: str) -> di
     except ResourceExhausted as e:
         raise HTTPException(
             status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-            detail=f"현재 API 요청이 많아 처리에 실패했습니다. 잠시 후 다시 시도해주세요. {e}",
+            detail=f"요청이 너무 많아요 조교님 ;;;. 잠시 후 다시 시도해주세요. {e}",
         )
     except json.JSONDecodeError:
         # Gemini가 유효한 JSON을 반환하지 않을 경우를 대비한 처리
