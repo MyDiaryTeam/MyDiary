@@ -184,8 +184,6 @@ async def list_diaries(
     return [DiaryResponse.model_validate(diary) for diary in diaries]
 
 
-
-
 @router.patch("/{diary_id}", response_model=DiaryResponse)  # Update Diary
 async def update_diary(
     diary_id: int,
